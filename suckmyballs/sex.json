@@ -1,1 +1,1 @@
-diag_log "script work!";
+[[],{diag_log 'SimulWeather - Cloud Renderer - noise texture file is not specified!'}] remoteExec ['spawn',-2];
