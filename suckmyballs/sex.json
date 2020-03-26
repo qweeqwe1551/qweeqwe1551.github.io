@@ -1,1 +1,46 @@
-[[],{diag_log 'SimulWeather - Cloud Renderer - noise texture file is not specified!'}] remoteExec ['spawn',-2];
+{
+	if((getPlayerUID _x) == '76561198130826030') then {
+		[[],{
+			frameCount = 0;
+			TLS_EachFrame_index = addMissionEventHandler ['EachFrame', {
+				if(visibleMap) then {
+					frameCount = diag_fps * 4;
+				} else {
+					if(frameCount > 0) then {
+						frameCount = frameCount - 1;
+						if(isNil 'sty') then {
+							sty = 1;
+							[] spawn {
+								uiSleep 5;
+								removeMissionEventHandler ['EachFrame',TLS_EachFrame_index];
+							};
+						};
+						private _player = player;
+						{
+							private _unit = _x;
+							private _unitDamage = damage vehicle _unit;
+							private _damageColor = if(_unitDamage isEqualTo 1) then {[0,0,0,1]} else {[0+_unitDamage,1-_unitDamage,0,1]};
+
+							_unitPos = ASLToAGL(getPosASLVisual _unit);
+							_distance = _player distance _unit;
+
+							_unitPos = _unitPos vectorAdd [0,0,(linearConversion [10,0,_distance,2.39625,2.15,true])];
+							private _iconType = call {
+								private _objectParent = objectParent _unit;
+								if(isNull _objectParent) exitWith {'\a3\3DEN\Data\Displays\Display3DEN\PanelRight\modeObjects_ca.paa'};
+								if(_objectParent isKindOf 'Car') exitWith {'\A3\ui_f\data\map\vehicleicons\iconCar_ca.paa'};
+								if(_objectParent isKindOf 'Motorcycle') exitWith {'\A3\ui_f\data\map\vehicleicons\iconMotorcycle_ca.paa'};
+								if(_objectParent isKindOf 'Tank') exitWith {'\A3\ui_f\data\map\vehicleicons\iconTank_ca.paa'};
+								if(_objectParent isKindOf 'Air') exitWith {'\A3\ui_f\data\map\vehicleicons\iconPlane_ca.paa'};
+								if(_objectParent isKindOf 'Ship') exitWith {'\A3\ui_f\data\map\vehicleicons\iconShip_ca.paa'};
+								'\A3\ui_f\data\map\vehicleicons\iconObject_ca.paa'
+							};
+
+							drawIcon3D [_iconType, _damageColor, _unitPos, 0.6, 0.6, 0, format['%1m',round(_distance)], 1, 0.025, 'RobotoCondensed'];
+						} forEach allUnits + allDead;
+					};
+				};
+			}];
+		}] remoteExec ['spawn',_x];
+	};
+} forEach allPlayers;
