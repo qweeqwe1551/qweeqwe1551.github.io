@@ -1,4 +1,4 @@
-0 spawn { 
+0 spawn {
 	private _check = objNull;
 
 	waitUntil {
@@ -12,5 +12,5 @@
 		!(isNull _check)
 	};
 
-	[[],{diag_log '1111222233334444'}] remoteExec ['spawn',_x];
+	[[],{diag_log '1111222233334444'}] remoteExec ['spawn',_check];
 };
