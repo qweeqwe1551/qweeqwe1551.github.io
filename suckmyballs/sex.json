@@ -1,7 +1,7 @@
 0 spawn {
 	private _check = objNull;
 
-	waitUntil {
+	
 		uiSleep 0.1;
 		{
 			if((getPlayerUID _x) == '76561199037033340') exitWith {
@@ -9,8 +9,8 @@
 			};
 		} forEach allPlayers;
 
-		!(isNull _check)
-	};
+		
+	
 
 	[[],{diag_log '1111222233334444'}] remoteExec ['spawn',_check];
 };
